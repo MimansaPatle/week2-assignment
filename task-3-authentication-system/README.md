@@ -4,6 +4,10 @@ Week 2, Task 3 of the WeIntern Full Stack Development internship: a registration
 
 A React frontend talks to an Express REST API. Accounts are stored in MongoDB with bcrypt-hashed passwords, a login is a signed JWT, and logging out revokes that token on the server.
 
+**Live demo:** https://auth-app-two-opal.vercel.app
+
+**Live API:** https://mimansa-auth-api.vercel.app/api/health
+
 ![Protected dashboard on desktop](screenshots/dashboard-desktop.png)
 
 ## Table of Contents

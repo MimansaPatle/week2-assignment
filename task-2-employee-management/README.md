@@ -4,6 +4,10 @@ Week 2, Task 2 of a Full Stack Development internship: an employee directory whe
 
 The React frontend calls an Express REST API, and the API stores the employees in MongoDB through Mongoose.
 
+**Live demo:** https://employee-app-bice.vercel.app
+
+**Live API:** https://employee-api-rust-nu.vercel.app/api/health
+
 ![Employee dashboard on desktop](screenshots/dashboard-desktop.png)
 
 ## 1. Overview
