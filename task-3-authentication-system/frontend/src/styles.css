@@ -1,0 +1,1137 @@
+/* Nexus authentication: styles (warm, editorial theme with a deep blue accent)
+   Contents
+   1. Tokens and base
+   2. Shared pieces (brand, eyebrow, top bar, buttons, spinner, banner, tag, avatar)
+   3. Register and Log in: headline band, form and the list of protections
+   4. Forms (fields, strength meter, success panel)
+   5. Checking screen
+   6. Dashboard
+   7. Tablet (below 1024px)
+   8. Mobile (below 640px)
+   9. Motion preferences
+*/
+
+/* 1. Tokens and base ------------------------------------------------------ */
+
+:root {
+  --paper: oklch(0.97 0.008 75);
+  --pane: oklch(0.985 0.005 75);
+  --ink: oklch(0.25 0.06 265);
+  --ink-hover: oklch(0.32 0.08 265);
+  --on-ink: oklch(0.98 0.01 75);
+
+  --accent: oklch(0.46 0.2 262);
+  --accent-hover: oklch(0.4 0.2 262);
+  --accent-text: oklch(0.44 0.2 262);
+  --on-accent: oklch(0.99 0.01 75);
+  --ring: oklch(0.46 0.2 262 / 0.3);
+
+  --muted: oklch(0.45 0.05 265);
+  --soft: oklch(0.42 0.04 265);
+
+  --line: oklch(0.85 0.02 265);
+  --line-soft: oklch(0.88 0.015 265);
+  --line-field: oklch(0.72 0.03 265);
+
+  --danger: oklch(0.52 0.2 28);
+  --danger-bg: oklch(0.96 0.03 35);
+  --good: oklch(0.5 0.13 150);
+  --good-bg: oklch(0.95 0.04 150);
+  --warn: oklch(0.55 0.13 70);
+  --warn-bg: oklch(0.96 0.045 85);
+
+  --serif: 'Newsreader', Georgia, serif;
+  --sans: 'Familjen Grotesk', system-ui, sans-serif;
+  --mono: 'Martian Mono', ui-monospace, Consolas, monospace;
+
+  /* The heavy rule used to divide the page. */
+  --rule: 1.5px solid var(--ink);
+
+  /* Sizes that change with the screen width (see sections 7 and 8). */
+  --gutter: 48px;
+  --title-size: 84px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input {
+  font-family: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+a {
+  color: inherit;
+}
+
+/* One focus style for everything that can be reached with the keyboard.
+   Inputs have their own (section 4). */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fill {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* 2. Shared pieces -------------------------------------------------------- */
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.brand__name {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* Small upper-case label in the mono font. */
+.eyebrow,
+.brand__tag {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.eyebrow--accent {
+  color: var(--accent-text);
+}
+
+.topbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 68px;
+  padding: 0 var(--gutter);
+  border-bottom: var(--rule);
+}
+
+.topbar__switch {
+  margin: 0;
+  font-size: 15px;
+  color: var(--soft);
+  white-space: nowrap;
+}
+
+.topbar__link {
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+}
+
+.topbar__link:hover {
+  color: var(--accent-text);
+}
+
+.topbar__user {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 22px;
+  border: 1.5px solid transparent;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.button--wide {
+  width: 100%;
+}
+
+.button--primary {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.button--primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.button--ghost {
+  border-color: var(--ink);
+  background: transparent;
+}
+
+.button--ghost:hover:not(:disabled) {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+.spinner {
+  flex: none;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.spinner--large {
+  width: 24px;
+  height: 24px;
+}
+
+/* Tick used in the lists of protections. */
+.check {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--accent-text);
+}
+
+.check--large {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: var(--rule);
+  border-radius: 50%;
+  font-size: 18px;
+  color: var(--ink);
+}
+
+.dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--good);
+}
+
+/* Small outlined label with a status dot. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  /* The colour of the rule and the icon, set by the kind below. */
+  --banner-color: var(--ink);
+  border-left: 3px solid var(--banner-color);
+  background: oklch(0.94 0.012 265);
+}
+
+.banner__glyph {
+  flex: none;
+  width: 14px;
+  margin-top: 3px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--banner-color);
+}
+
+.banner__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.banner__title {
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.banner__body {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--soft);
+}
+
+.banner--error {
+  --banner-color: var(--danger);
+  background: var(--danger-bg);
+}
+
+.banner--success {
+  --banner-color: var(--good);
+  background: var(--good-bg);
+}
+
+.banner--warn {
+  --banner-color: var(--warn);
+  background: var(--warn-bg);
+}
+
+.avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: var(--rule);
+  border-radius: 50%;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.avatar--large {
+  width: 56px;
+  height: 56px;
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 500;
+}
+
+/* 3. Register and Log in -------------------------------------------------- */
+
+/* Three areas: the headline band across the top, then the form and the
+   list of protections side by side under it. */
+.auth {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+}
+
+.auth__head {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 44px var(--gutter) 40px;
+  border-bottom: var(--rule);
+}
+
+.auth__head .eyebrow {
+  color: var(--accent-text);
+}
+
+.auth__title {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: var(--title-size);
+  line-height: 0.98;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.auth__lead {
+  margin: 0;
+  font-size: 18px;
+  color: var(--soft);
+}
+
+.auth__form {
+  min-width: 0;
+  padding: 40px var(--gutter) 56px;
+}
+
+.auth__column {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 100%;
+  max-width: 440px;
+}
+
+.auth__note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+/* The right-hand column: a statement and the ruled list of protections,
+   set off from the form by one heavy rule. */
+.auth__panel {
+  min-width: 0;
+  padding: 40px var(--gutter) 56px;
+  border-left: var(--rule);
+  background: var(--pane);
+}
+
+.facts {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  max-width: 520px;
+}
+
+.facts__title {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 30px;
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.facts__list {
+  display: flex;
+  flex-direction: column;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--rule);
+  counter-reset: fact;
+}
+
+.fact {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 17px;
+  font-weight: 500;
+  counter-increment: fact;
+}
+
+/* The list is numbered 01, 02 ... in place of the ticks. */
+.fact .check {
+  font-size: 0;
+}
+
+.fact .check::before {
+  content: counter(fact, decimal-leading-zero);
+  font-size: 11px;
+  color: var(--accent-text);
+}
+
+.fact__meta,
+.tile__meta {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+/* 4. Forms ---------------------------------------------------------------- */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin: 0;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field__label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.field__control {
+  position: relative;
+  display: flex;
+}
+
+/* Inputs are a single underline, like a line on a paper form. */
+.field__input {
+  flex: 1;
+  min-width: 0;
+  height: 46px;
+  padding: 0 2px;
+  border: 0;
+  border-bottom: 2px solid var(--line-field);
+  border-radius: 0;
+  background: transparent;
+  font-size: 17px;
+  outline: none;
+}
+
+/* Room for the Show/Hide button. */
+.field__input--password {
+  padding-right: 56px;
+}
+
+.field__input::placeholder {
+  color: oklch(0.66 0.03 265);
+}
+
+.field__input:hover:not(:disabled) {
+  border-bottom-color: var(--ink);
+}
+
+.field__input:focus {
+  border-bottom-color: var(--ink);
+  box-shadow: 0 3px 0 0 var(--ring);
+}
+
+.field__input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.field--invalid .field__input {
+  border-bottom-color: var(--danger);
+}
+
+.field__input:disabled {
+  opacity: 0.55;
+}
+
+/* Keeps the paper background when the browser fills in a saved value. */
+.field__input:-webkit-autofill {
+  -webkit-text-fill-color: var(--ink);
+  box-shadow: 0 0 0 1000px var(--paper) inset;
+}
+
+.field__toggle {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  height: 30px;
+  padding: 0 6px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: lowercase;
+  transform: translateY(-50%);
+}
+
+.field__toggle:hover {
+  color: var(--ink);
+}
+
+.field__toggle:focus-visible {
+  outline-offset: 0;
+}
+
+.meter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+  /* The colour of the lit bars and the label, set by the score below. */
+  --meter-color: var(--line);
+}
+
+.meter--1 {
+  --meter-color: var(--danger);
+}
+
+.meter--2 {
+  --meter-color: var(--warn);
+}
+
+.meter--3,
+.meter--4 {
+  --meter-color: var(--good);
+}
+
+.meter__bars {
+  flex: 1;
+  display: flex;
+  gap: 4px;
+}
+
+.meter__bar {
+  flex: 1;
+  height: 3px;
+  background: var(--line);
+}
+
+.meter__bar--on {
+  background: var(--meter-color);
+}
+
+.meter__label {
+  min-width: 52px;
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: var(--meter-color);
+}
+
+.field__error {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  font-weight: 500;
+  color: var(--danger);
+}
+
+.field__error-mark {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.field__hint {
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--soft);
+}
+
+.submit {
+  margin-top: 6px;
+}
+
+.submit--loading {
+  cursor: progress;
+}
+
+/* Confirmed: ink instead of the accent. */
+.submit--done {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+.success {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.success__text {
+  margin: 0;
+  font-size: 16.5px;
+  color: var(--soft);
+}
+
+.success__text strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.success__track {
+  height: 3px;
+  margin: 6px 0;
+  background: var(--line);
+  overflow: hidden;
+}
+
+/* Fills up while waiting to move on to the login page. */
+.success__fill {
+  width: 100%;
+  height: 100%;
+  background: var(--accent);
+  animation: fill linear both;
+}
+
+/* 5. Checking screen ------------------------------------------------------ */
+
+.checking {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 100vh;
+  padding: 24px;
+  text-align: center;
+}
+
+.checking__badge {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 4px;
+  border: var(--rule);
+  border-radius: 50%;
+}
+
+.checking__text {
+  font-family: var(--serif);
+  font-size: 30px;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+/* 6. Dashboard ------------------------------------------------------------ */
+
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.logout {
+  height: 40px;
+  padding: 0 16px;
+  font-size: 14.5px;
+}
+
+.dash {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 48px var(--gutter) 64px;
+}
+
+/* Dimmed while logging out. */
+.dash--leaving {
+  opacity: 0.5;
+}
+
+.dash__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.dash__head .eyebrow {
+  color: var(--accent-text);
+}
+
+.dash__title {
+  margin: 10px 0 0;
+  font-family: var(--serif);
+  font-size: 68px;
+  line-height: 0.98;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  overflow-wrap: anywhere;
+}
+
+/* Two columns under one heavy rule, split by a second one. */
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  border-top: var(--rule);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+  padding: 28px 0 32px;
+}
+
+.card--session {
+  padding-right: 40px;
+  border-right: var(--rule);
+  /* Colour of the countdown; turns to the accent for the last five minutes. */
+  --count-color: var(--ink);
+}
+
+.card--session + .card {
+  padding-left: 40px;
+}
+
+.card--expiring {
+  --count-color: var(--accent-text);
+}
+
+.card--wide {
+  grid-column: 1 / -1;
+  padding-bottom: 0;
+  border-top: var(--rule);
+}
+
+.card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 30px;
+}
+
+.card__title {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.state--warning .dot {
+  background: var(--accent);
+}
+
+.state--ending .dot {
+  background: var(--line-field);
+}
+
+.countdown__value {
+  font-family: var(--serif);
+  font-size: 128px;
+  line-height: 0.9;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--count-color);
+}
+
+.countdown__track {
+  height: 4px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.countdown__fill {
+  height: 100%;
+  background: var(--count-color);
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 0;
+  border-top: 1px solid var(--line-soft);
+  font-size: 15.5px;
+}
+
+.row:last-child {
+  padding-bottom: 0;
+}
+
+.row dt {
+  color: var(--soft);
+}
+
+.row dd {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 13px;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.identity__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.identity__name {
+  font-family: var(--serif);
+  font-size: 30px;
+  line-height: 1.05;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
+.identity__email {
+  font-size: 15.5px;
+  color: var(--soft);
+  overflow-wrap: anywhere;
+}
+
+/* Four cells in a row, divided by thin rules. */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 20px 4px;
+  border-left: 1px solid var(--line);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.tile:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+/* 7. Tablet --------------------------------------------------------------- */
+
+@media (max-width: 1023.98px) {
+  :root {
+    --gutter: 32px;
+    --title-size: 60px;
+  }
+
+  /* The list of protections moves below the form. */
+  .auth {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr;
+  }
+
+  .auth__head {
+    padding: 36px var(--gutter) 32px;
+  }
+
+  .auth__form {
+    padding: 36px var(--gutter) 44px;
+  }
+
+  .auth__column,
+  .facts {
+    max-width: 480px;
+  }
+
+  .auth__panel {
+    padding: 36px var(--gutter) 48px;
+    border-left: 0;
+    border-top: var(--rule);
+  }
+
+  .facts__title {
+    font-size: 26px;
+  }
+
+  .dash__title {
+    font-size: 54px;
+  }
+
+  .countdown__value {
+    font-size: 104px;
+  }
+
+  .card--session {
+    padding-right: 28px;
+  }
+
+  .card--session + .card {
+    padding-left: 28px;
+  }
+
+  .tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tile {
+    padding-bottom: 18px;
+  }
+
+  .tile:nth-child(odd) {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .tile:nth-child(n + 3) {
+    border-top: 1px solid var(--line);
+  }
+}
+
+/* 8. Mobile --------------------------------------------------------------- */
+
+@media (max-width: 639.98px) {
+  :root {
+    --gutter: 20px;
+    --title-size: 44px;
+  }
+
+  .topbar {
+    height: 60px;
+  }
+
+  .brand__name {
+    font-size: 24px;
+  }
+
+  /* Only the link itself is shown beside the brand. */
+  .topbar__prompt,
+  .user-chip__name {
+    display: none;
+  }
+
+  .auth__head {
+    gap: 10px;
+    padding: 28px var(--gutter) 24px;
+  }
+
+  .auth__lead {
+    font-size: 16px;
+  }
+
+  .auth__form {
+    padding: 28px var(--gutter) 36px;
+  }
+
+  .auth__column,
+  .facts {
+    max-width: none;
+  }
+
+  .auth__panel {
+    padding: 28px var(--gutter) 40px;
+  }
+
+  .facts__title {
+    font-size: 24px;
+  }
+
+  .fact {
+    grid-template-columns: 28px minmax(0, 1fr);
+    font-size: 16px;
+  }
+
+  .fact__meta {
+    display: none;
+  }
+
+  .dash {
+    gap: 24px;
+    padding: 32px var(--gutter) 48px;
+  }
+
+  .dash__title {
+    font-size: 42px;
+  }
+
+  /* One column; the second section gets the heavy rule above it instead. */
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .card--session {
+    padding-right: 0;
+    border-right: 0;
+  }
+
+  .card--session + .card {
+    padding-left: 0;
+    border-top: var(--rule);
+  }
+
+  .countdown__value {
+    font-size: 88px;
+  }
+
+  .identity__name {
+    font-size: 26px;
+  }
+}
+
+/* 9. Motion preferences --------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 1.6s;
+  }
+
+  .success__fill {
+    animation: none;
+  }
+}
