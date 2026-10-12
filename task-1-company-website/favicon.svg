@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Tulip &amp; Twine">
+  <path d="M50 90C50 90 48 65 50 48" stroke="#3B7A6A" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <path d="M50 72C38 68 22 72 18 60C28 58 42 66 50 72Z" fill="#78B99B"/>
+  <path d="M50 68C62 64 78 68 82 56C72 54 58 62 50 68Z" fill="#5BA383"/>
+  <path d="M25 38C25 56 42 60 50 60C58 60 75 56 75 38C75 22 62 18 50 32C38 18 25 22 25 38Z" fill="#C85278"/>
+  <path d="M35 38C35 52 46 56 50 56C54 56 65 52 65 38C65 26 56 22 50 30C44 22 35 26 35 38Z" fill="#FF8DAA"/>
+  <path d="M42 38C42 48 48 50 50 50C52 50 58 48 58 38C58 30 54 26 50 32C46 26 42 30 42 38Z" fill="#FFD6E0"/>
+</svg>

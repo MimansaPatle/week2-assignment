@@ -1,0 +1,47 @@
+# ── Operating system files ──────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# ── Editor / IDE ────────────────────────────────────────────
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*~
+
+# ── Build output / tooling ───────────────────────────────────
+node_modules/
+dist/
+build/
+.cache/
+.parcel-cache/
+.next/
+out/
+.nuxt/
+.output/
+
+# ── Environment & secrets ────────────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ── Logs ────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── Temporary / misc ────────────────────────────────────────
+*.tmp
+*.temp
+*.bak
